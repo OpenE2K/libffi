@@ -16,4 +16,6 @@
 # ifndef ABI_NUM
 #  define STATIC_CHAIN_REG  "ecx"	/* FFI_DEFAULT_ABI only */
 # endif
+#elif defined(__e2k__)
+# define STATIC_CHAIN_REG "%g12"
 #endif

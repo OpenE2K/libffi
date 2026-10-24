@@ -56,6 +56,7 @@ ffi_struct_float_mask (ffi_type *outer_type, int size_mask)
 {
   ffi_type **elts;
   ffi_type *t;
+  size_t initial_offset;
 
   if (outer_type->type == FFI_TYPE_COMPLEX)
     {
@@ -69,6 +70,7 @@ ffi_struct_float_mask (ffi_type *outer_type, int size_mask)
       return (m << 8) | z;
     }
   FFI_ASSERT (outer_type->type == FFI_TYPE_STRUCT);
+  initial_offset = FFI_ALIGN ((size_mask & 0xff), outer_type->alignment);
 
   for (elts = outer_type->elements; (t = *elts) != NULL; elts++)
     {
@@ -100,7 +102,7 @@ ffi_struct_float_mask (ffi_type *outer_type, int size_mask)
     }
 
   size_mask = FFI_ALIGN(size_mask, outer_type->alignment);
-  FFI_ASSERT ((size_mask & 0xff) == outer_type->size);
+  FFI_ASSERT ((size_mask & 0xff) - initial_offset == outer_type->size);
 
   return size_mask;
 }
